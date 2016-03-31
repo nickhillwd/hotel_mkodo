@@ -1,4 +1,5 @@
 var Hotel = require('../hotel/hotel.js');
+var Alarm = require('../hotel/alarm.js');
 
 var chai = require('chai');
 var assert = chai.assert;
@@ -38,4 +39,41 @@ describe('Hotel', function(){
     expect(testSearch2).to.equal("No such room");
   });
 
+  it('should be able to add an alarm call for a guest', function(){
+    mkodoHotel.populateHotel(100);
+    mkodoHotel.requestWakeUpCall(20, '2016-04-01T07:00:00');
+    expect(mkodoHotel.alarmSystem.callQueue.length).to.equal(1);
+  });
+
 });
+
+describe('Alarm', function(){
+
+  beforeEach(function(){
+    mokodoHotelsAlarm = new Alarm();
+    mkodoHotel = new Hotel("Mkodo Hotel");
+    mkodoHotel.populateHotel(100);
+  });
+
+  it('should be able to set up a new alarm and add the the call queue', function(){
+    testRoom = mkodoHotel.findRoomByNumber(20);
+    mokodoHotelsAlarm.setAlarmTime(testRoom, '2016-04-01T07:00:00');
+    expect(mokodoHotelsAlarm.callQueue.length).to.equal(1);
+    expect(mokodoHotelsAlarm.callQueue[0]).to.have.property('roomNumber', 20);
+    expect(mokodoHotelsAlarm.callQueue[0]).to.have.property('alarmTime');
+  });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+

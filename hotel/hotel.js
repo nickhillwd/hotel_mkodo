@@ -1,8 +1,10 @@
 var Room = require('./room.js');
+var Alarm = require('./alarm.js');
 
 var Hotel = function(hotelName){
   this.hotelName = hotelName;
   this.hotelRooms = [];
+  this.alarmSystem = new Alarm();
 }
 
 Hotel.prototype = {
@@ -29,7 +31,9 @@ Hotel.prototype = {
   },
 
   requestWakeUpCall: function(roomNumber, time){
-
+    currentRoom = this.findRoomByNumber(roomNumber);
+    currentRoom.alarmCurrentlySet = true;
+    this.alarmSystem.setAlarmTime(currentRoom, time);
   }
 
 }
