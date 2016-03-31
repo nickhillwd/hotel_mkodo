@@ -13,6 +13,7 @@ describe('Hotel', function(){
 
   afterEach(function(){
     mkodoHotel.hotelRooms = [];
+    mkodoHotel.alarmSystem.callQueue = [];
   })
   
   it('should have an empty array of hotel rooms', function(){
@@ -62,7 +63,15 @@ describe('Hotel', function(){
     mkodoHotel.cancelWakeUpCall(30);
     expect(mkodoHotel.alarmSystem.callQueue.length).to.equal(2);
     expect(mkodoHotel.alarmSystem.callQueue[1]).to.have.property('roomNumber', 50);
-  })
+  });
+
+  it('should be able to send an alarm call to a specific room', function(){
+    mkodoHotel.populateHotel(100);
+    mkodoHotel.requestWakeUpCall(10, '2016-04-01T08:00:00');
+    mkodoHotel.sendWakeUpCall(10);
+    expect(mkodoHotel.hotelRooms[9]).to.have.property('alarmReceived', true);
+    expect(mkodoHotel.hotelRooms[9]).to.have.property('alarmCurrentlySet', false);
+  });
 
 });
 

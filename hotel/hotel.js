@@ -1,5 +1,6 @@
 var Room = require('./room.js');
 var Alarm = require('./alarm.js');
+var moment = require('moment');
 
 var Hotel = function(hotelName){
   this.hotelName = hotelName;
@@ -32,12 +33,16 @@ Hotel.prototype = {
 
   requestWakeUpCall: function(roomNumber, time){
     var currentRoom = this.findRoomByNumber(roomNumber);
-    currentRoom.alarmCurrentlySet = true;
-    this.alarmSystem.setAlarmTime(currentRoom, time);
+    if(currentRoom.alarmCurrentlySet === true){
+      return "you already have an alarm set";
+    }else{
+      this.alarmSystem.setAlarmTime(currentRoom, time);
+      currentRoom.alarmCurrentlySet = true;
+    }
   },
 
   changeWakeUpCall: function(roomNumber, time){
-    currentRoom = this.findRoomByNumber(roomNumber);
+    var currentRoom = this.findRoomByNumber(roomNumber);
     if(currentRoom.alarmCurrentlySet === false){
       this.requestWakeUpCall(roomNumber, time);
     }else{
@@ -53,6 +58,17 @@ Hotel.prototype = {
         currentRoom.alarmCurrentlySet = false;
       }
     }.bind(this))
+  },
+
+  sendWakeUpCall: function(roomNumber){
+    currentRoom = this.findRoomByNumber(roomNumber);
+    currentRoom['alarmReceived'] = true;
+    currentRoom['alarmCurrentlySet'] = false;
+    console.log("Wake Up! Rise and Shine!");
+  },
+
+  getCurrentTime: function(){
+    moment('h:mm:ss a');
   }
 
 }
