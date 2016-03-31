@@ -14,6 +14,22 @@ Hotel.prototype = {
       this.hotelRooms.push(room);
       i++
     }
+  },
+
+  findRoomByNumber: function(roomNumber){
+    if(roomNumber < 1 || roomNumber > (this.hotelRooms.length+1)){
+      return "No such room";
+    }else{
+      for(room of this.hotelRooms){
+        if(roomNumber === room.roomNumber){
+          return room
+        }
+      }
+    }
+  },
+
+  requestWakeUpCall: function(roomNumber, time){
+
   }
 
 }
