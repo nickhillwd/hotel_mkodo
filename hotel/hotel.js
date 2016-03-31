@@ -69,7 +69,7 @@ Hotel.prototype = {
 
   getCurrentTime: function(){
     moment('h:mm:ss a');
-  }
+  },
 
 }
 
