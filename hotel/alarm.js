@@ -18,6 +18,14 @@ Alarm.prototype = {
         }
       );
     }
+  },
+
+  changeAlarmTime: function(roomNumber, newTime){
+    this.callQueue.forEach(function(alarm, i){
+      if(roomNumber === alarm.roomNumber){
+        this.callQueue[i].alarmTime = newTime;
+      }
+    }.bind(this))
   }
 
 }

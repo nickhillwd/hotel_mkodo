@@ -34,6 +34,15 @@ Hotel.prototype = {
     currentRoom = this.findRoomByNumber(roomNumber);
     currentRoom.alarmCurrentlySet = true;
     this.alarmSystem.setAlarmTime(currentRoom, time);
+  },
+
+  changeWakeUpCall: function(roomNumber, time){
+    currentRoom = this.findRoomByNumber(roomNumber);
+    if(currentRoom.alarmCurrentlySet === false){
+      this.requestWakeUpCall(roomNumber, time);
+    }else{
+      this.alarmSystem.changeAlarmTime(roomNumber, time);
+    }
   }
 
 }

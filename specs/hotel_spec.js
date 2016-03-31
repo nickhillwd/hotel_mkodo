@@ -45,6 +45,15 @@ describe('Hotel', function(){
     expect(mkodoHotel.alarmSystem.callQueue.length).to.equal(1);
   });
 
+  it('should be able to change the time of an existing alarm', function(){
+    mkodoHotel.populateHotel(100);
+    mkodoHotel.requestWakeUpCall(50, '2016-04-01T08:00:00');
+    //AH! Alarm too late!
+    mkodoHotel.changeWakeUpCall(50, '2016-04-01T07:30:00');
+    expect(mkodoHotel.alarmSystem.callQueue.length).to.equal(1);
+    expect(mkodoHotel.alarmSystem.callQueue[0].alarmTime).to.equal('Fri, 01 Apr 2016 07:30:00 GMT');
+  });
+
 });
 
 describe('Alarm', function(){
