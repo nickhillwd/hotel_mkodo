@@ -54,6 +54,16 @@ describe('Hotel', function(){
     expect(mkodoHotel.alarmSystem.callQueue[0].alarmTime).to.equal('Fri, 01 Apr 2016 07:30:00 GMT');
   });
 
+  it('should be possible to cancel an alarm call', function(){
+    mkodoHotel.populateHotel(100);
+    mkodoHotel.requestWakeUpCall(10, '2016-04-01T08:00:00');
+    mkodoHotel.requestWakeUpCall(30, '2016-04-01T08:00:00');
+    mkodoHotel.requestWakeUpCall(50, '2016-04-01T08:00:00');
+    mkodoHotel.cancelWakeUpCall(30);
+    expect(mkodoHotel.alarmSystem.callQueue.length).to.equal(2);
+    expect(mkodoHotel.alarmSystem.callQueue[1]).to.have.property('roomNumber', 50);
+  })
+
 });
 
 describe('Alarm', function(){

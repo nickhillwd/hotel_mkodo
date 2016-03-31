@@ -31,7 +31,7 @@ Hotel.prototype = {
   },
 
   requestWakeUpCall: function(roomNumber, time){
-    currentRoom = this.findRoomByNumber(roomNumber);
+    var currentRoom = this.findRoomByNumber(roomNumber);
     currentRoom.alarmCurrentlySet = true;
     this.alarmSystem.setAlarmTime(currentRoom, time);
   },
@@ -43,6 +43,16 @@ Hotel.prototype = {
     }else{
       this.alarmSystem.changeAlarmTime(roomNumber, time);
     }
+  },
+
+  cancelWakeUpCall: function(roomNumber){
+    var currentRoom = this.findRoomByNumber(roomNumber);
+    this.alarmSystem.callQueue.forEach(function(alarm, i){
+      if(roomNumber === alarm.roomNumber){
+        this.alarmSystem.callQueue.splice(i, 1);
+        currentRoom.alarmCurrentlySet = false;
+      }
+    }.bind(this))
   }
 
 }
