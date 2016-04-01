@@ -52,7 +52,7 @@ describe('Hotel', function(){
     //AH! Alarm too late!
     mkodoHotel.changeWakeUpCall(50, '2016-04-01T07:30:00');
     expect(mkodoHotel.alarmSystem.callQueue.length).to.equal(1);
-    expect(mkodoHotel.alarmSystem.callQueue[0].alarmTime).to.equal('Fri, 01 Apr 2016 07:30:00 GMT');
+    expect(mkodoHotel.alarmSystem.callQueue[0].alarmTime).to.equal('2016-04-01T07:30:00');
   });
 
   it('should be possible to cancel an alarm call', function(){
