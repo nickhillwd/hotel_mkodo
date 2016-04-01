@@ -1,8 +1,6 @@
 var Hotel = require('../hotel/hotel.js');
 var Alarm = require('../hotel/alarm.js');
-
 var chai = require('chai');
-var assert = chai.assert;
 var expect = chai.expect;
 
 describe('Hotel', function(){
@@ -14,7 +12,7 @@ describe('Hotel', function(){
   afterEach(function(){
     mkodoHotel.hotelRooms = [];
     mkodoHotel.alarmSystem.callQueue = [];
-  })
+  });
   
   it('should have an empty array of hotel rooms', function(){
     expect(mkodoHotel.hotelRooms).to.be.empty;
@@ -73,6 +71,11 @@ describe('Hotel', function(){
     expect(mkodoHotel.hotelRooms[9]).to.have.property('alarmCurrentlySet', false);
   });
 
+  it('should be able to return the current time', function(){
+    mkodoHotel.populateHotel(100);
+    expect(mkodoHotel.getCurrentTime()).to.be.a('string');
+  });
+
 });
 
 describe('Alarm', function(){
@@ -92,16 +95,3 @@ describe('Alarm', function(){
   });
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-

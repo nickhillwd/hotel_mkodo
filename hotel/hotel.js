@@ -2,75 +2,72 @@ var Room = require('./room.js');
 var Alarm = require('./alarm.js');
 var moment = require('moment');
 
-var Hotel = function(hotelName){
-  this.hotelName = hotelName;
-  this.hotelRooms = [];
-  this.alarmSystem = new Alarm();
-}
+var Hotel = function (hotelName) {
+    this.hotelName = hotelName;
+    this.hotelRooms = [];
+    this.alarmSystem = new Alarm();
+};
 
-Hotel.prototype = {
-
-  populateHotel: function(roomQuantity){
+Hotel.prototype.populateHotel = function (roomQuantity) {
     var i = 0;
-    while(i < roomQuantity){
-      var room = new Room(i+1);
-      this.hotelRooms.push(room);
-      i++
+    while (i < roomQuantity) {
+        var room = new Room(i + 1);
+        this.hotelRooms.push(room);
+        i++
     }
-  },
+};
 
-  findRoomByNumber: function(roomNumber){
-    if(roomNumber < 1 || roomNumber > (this.hotelRooms.length+1)){
-      return "No such room";
-    }else{
-      for(room of this.hotelRooms){
-        if(roomNumber === room.roomNumber){
-          return room
+Hotel.prototype.findRoomByNumber = function (roomNumber) {
+    if (roomNumber < 1 || roomNumber > (this.hotelRooms.length + 1)) {
+        return "No such room";
+    } else {
+        for (var room of this.hotelRooms) {
+            if (roomNumber === room.roomNumber) {
+                return room;
+            }
         }
-      }
     }
-  },
+};
 
-  requestWakeUpCall: function(roomNumber, time){
+Hotel.prototype.requestWakeUpCall = function (roomNumber, time) {
     var currentRoom = this.findRoomByNumber(roomNumber);
-    if(currentRoom.alarmCurrentlySet === true){
-      return "you already have an alarm set";
-    }else{
-      this.alarmSystem.setAlarmTime(currentRoom, time);
-      currentRoom.alarmCurrentlySet = true;
+    if (currentRoom.alarmCurrentlySet == true) {
+        return "you already have an alarm set";
+    } else {
+        this.alarmSystem.setAlarmTime(currentRoom, time);
+        currentRoom.alarmCurrentlySet = true;
     }
-  },
+};
 
-  changeWakeUpCall: function(roomNumber, time){
+Hotel.prototype.changeWakeUpCall = function (roomNumber, time) {
     var currentRoom = this.findRoomByNumber(roomNumber);
-    if(currentRoom.alarmCurrentlySet === false){
-      this.requestWakeUpCall(roomNumber, time);
-    }else{
-      this.alarmSystem.changeAlarmTime(roomNumber, time);
+    if (currentRoom.alarmCurrentlySet == false) {
+        this.requestWakeUpCall(roomNumber, time);
+    } else {
+        this.alarmSystem.changeAlarmTime(roomNumber, time);
     }
-  },
+};
 
-  cancelWakeUpCall: function(roomNumber){
+Hotel.prototype.cancelWakeUpCall = function (roomNumber) {
     var currentRoom = this.findRoomByNumber(roomNumber);
-    this.alarmSystem.callQueue.forEach(function(alarm, i){
-      if(roomNumber === alarm.roomNumber){
-        this.alarmSystem.callQueue.splice(i, 1);
-        currentRoom.alarmCurrentlySet = false;
-      }
+    this.alarmSystem.callQueue.forEach(function (alarm, i) {
+        if (roomNumber === alarm.roomNumber) {
+            this.alarmSystem.callQueue.splice(i, 1);
+            currentRoom.alarmCurrentlySet = false;
+        }
     }.bind(this))
-  },
+};
 
-  sendWakeUpCall: function(roomNumber){
+Hotel.prototype.sendWakeUpCall = function (roomNumber) {
     currentRoom = this.findRoomByNumber(roomNumber);
     currentRoom['alarmReceived'] = true;
     currentRoom['alarmCurrentlySet'] = false;
     console.log("Wake Up! Rise and Shine!");
-  },
+};
 
-  getCurrentTime: function(){
-    moment('h:mm:ss a');
-  },
+Hotel.prototype.getCurrentTime = function () {
+    return moment().format('h:mm:ss a');
+};
 
-}
 
 module.exports = Hotel;
